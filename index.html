@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script src="https://fb.me/react-0.14.5.js"></script>
+        <script src="https://fb.me/react-dom-0.14.5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="./src/style.css"/>
+        <script src="./src/logic.js"></script>
+        <title>ReactApp</title>
+    </head>
+    <body>
+        <div id="app"/>
+        <script type="text/babel">
+            var idOfInput;
+
+            var Panel = React.createClass({
+                printLetter: function(e){
+                    document.getElementById(idOfInput).value += e.target.value;
+                },
+
+                render: function(){
+                    return(
+                        <div className="panel">
+                            <div className="panelLetters">
+                                <div>
+                                    <input className="btn btnLetters" type="button" value="A" onClick={this.printLetter}/>
+                                    <input className="btn btnLetters" type="button" value="B" onClick={this.printLetter}/>
+                                    <input className="btn btnLetters" type="button" value="C" onClick={this.printLetter}/>
+                                    <input className="btn btnLetters" type="button" value="D" onClick={this.printLetter}/>
+                                    <input className="btn btnLetters" type="button" value="E" onClick={this.printLetter}/>
+                                </div>                                
+                                <div>
+                                    <input className="btn btnLetters" type="button" value="F" onClick={this.printLetter}/>
+                                    <input className="btn btnLetters" type="button" value="G" onClick={this.printLetter}/>
+                                    <input className="btn btnLetters" type="button" value="H" onClick={this.printLetter}/>
+                                    <input className="btn btnOperations" type="button" value="(" onClick={this.printLetter}/>
+                                    <input className="btn btnOperations" type="button" value=")" onClick={this.printLetter}/>
+                                </div> 
+                            </div>                               
+                            <div className="panelOperations">
+                                <input className="btn btnOperations" type="button" value="¬" onClick={this.printLetter}/>
+                                <input className="btn btnOperations" type="button" value="∪" onClick={this.printLetter}/>
+                                <input className="btn btnOperations" type="button" value="∩" onClick={this.printLetter}/>
+                                <input className="btn btnOperations" type="button" value="\" onClick={this.printLetter}/>
+                                <input className="btn btnOperations" type="button" value="△" onClick={this.printLetter}/>
+                            </div>
+                        </div>
+                    )
+                }
+            });
+            
+            var Expression = React.createClass({
+                onClickFunc: function(e){
+                    idOfInput = e.target.id;
+                },
+
+                render: function(){
+                    return(
+                        <div className={"expressionContainer"}>
+                            <input id={"A"+this.props.index} type="text" onClick={this.onClickFunc}/>
+                            <label> = </label>
+                            <input id = {"B"+this.props.index} type="text" onClick={this.onClickFunc}/>
+                        </div>
+                    )
+                }
+            });
+
+
+            var Board = React.createClass({
+                getInitialState: function () {
+                    return {
+                            commentsA: [], commentsB: [], index:1, first:true
+                        };
+                },
+
+                add: function(){
+                    var arrA = this.state.commentsA;
+                    var arrB = this.state.commentsB;
+                    var index = this.state.index;
+                    arrA.push("A"+this.state.index);
+                    arrB.push("B"+this.state.index);
+                    index++;
+                    console.log('-__-');
+                    this.setState({commentsA: arrA, commentsB: arrB, index:index, first:false});
+                },
+
+                remove: function(){
+                    var ind = this.state.index;
+                    var arrA = this.state.commentsA;
+                    var arrB = this.state.commentsB;
+                    if(ind > 1){
+                        ind--;
+                        arrA.splice(ind, 1);
+                        arrB.splice(ind, 1);
+                        this.setState({commentsA: arrA, commentsB: arrB, index: ind});
+                    }
+                },
+
+                renderExpression: function(item, i){
+                    return(
+                        <Expression
+                            index={i}
+                            key = {i}>
+                        </Expression>
+                    );
+                },
+
+                test: function(){
+                    var lpArr = [];
+                    var rpArr = [];
+                    for(var i = 0; i < this.state.index; i++){
+                        lpArr.push(document.getElementById("A" + i).value);
+                        rpArr.push(document.getElementById("B" + i).value);
+                    }
+                    var errList = errorList(lpArr, rpArr);
+                    var t = document.getElementById("result");
+                    if(errList.length > 0){
+                        switch (errList[0]) {
+                            case -1:                                
+                                t.innerHTML="Результат: не произведено ни одного преобразования";
+                                break;
+                            case -2:
+                                t.innerHTML="Результат: выражение изначально не тождественное";
+                                break;
+                            case -3:
+                                t.innerHTML="Результат: преоразование выполнено не до конца";
+                                break;
+                            default:
+                                if(errList.length > 1){
+                                    var text = "Результат: ошибки в строках ";
+                                    for(var i = 0; i < errList.length; i++){
+                                        text += ((errList[i] + 1) + ", ");
+                                    }
+                                } else {
+                                    var text = "Результат: ошибка в строке ";
+                                    text += (errList[0] + 1);
+                                }
+                                t.innerHTML = text;
+                                break;
+                        }
+                    } else{
+                        t.innerHTML="Результат: вроде все верно";
+                    }
+                },
+
+                render: function(){
+                    if(this.state.first) 
+                    {
+                        var arrA = this.state.commentsA;
+                        var arrB = this.state.commentsB;
+                        arrA.push("A0");
+                        arrB.push("B0");
+                    }
+                    return(
+                        <div className="calculator">
+                            <div className={"inputPanel"}>
+                            <Panel/>
+                            </div>
+                            <label className = "inputExp">Введите выражение:</label>
+                            <div className={"board"}>
+                                {this.state.commentsA.map(this.renderExpression)}
+                            </div>
+                            <div>
+                                <input className="btn addBtn" type="button" value="Добавить строку" onClick={this.add}/>
+                                <input className="btn removeBtn" type="button" value="Удалить строку" onClick={this.remove}/>
+                            </div>
+                            <input className="btn checkBtn" type="button" value = "Проверить" onClick={this.test}/>
+                            <div className="resultBox">
+                                <p id="result">Результат:</p>
+                            </div>
+                        </div>
+                    )
+                }
+            });
+
+            
+
+            ReactDOM.render(
+          <Board/>,
+          document.getElementById("app")
+        );
+        </script>
+    </body>
+</html>
