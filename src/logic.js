@@ -40,7 +40,7 @@ function checkElem(s, opsStack, opn){
     opsStack.push(s);
   } else {
     var c = opsStack[opsStack.length - 1];
-    while (checkPriority(c) >= checkPriority(s)) {
+    while (checkPriority(c) > checkPriority(s)) {
 			opn += c;
 			opsStack.pop();
 			if (opsStack.length != 0)
