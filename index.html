@@ -53,6 +53,7 @@
             var Expression = React.createClass({
                 onClickFunc: function(e){
                     idOfInput = e.target.id;
+                    e.target.style = "background-color:#white;";
                 },
 
                 render: function(){
@@ -113,15 +114,20 @@
                         lpArr.push(document.getElementById("A" + i).value);
                         rpArr.push(document.getElementById("B" + i).value);
                     }
+                    console.log(lpArr);
                     var errList = errorList(lpArr, rpArr);
                     var t = document.getElementById("result");
                     if(errList.length > 0){
                         switch (errList[0]) {
                             case -1:                                
                                 t.innerHTML="Результат: не произведено ни одного преобразования";
+                                document.getElementById("A0").style = "background-color:#a73853;";
+                                document.getElementById("B0").style = "background-color:#a73853;";
                                 break;
                             case -2:
                                 t.innerHTML="Результат: выражение изначально не тождественное";
+                                document.getElementById("A0").style = "background-color:#a73853;";
+                                document.getElementById("B0").style = "background-color:#a73853;";
                                 break;
                             case -3:
                                 t.innerHTML="Результат: преоразование выполнено не до конца";
@@ -137,10 +143,18 @@
                                     text += (errList[0] + 1);
                                 }
                                 t.innerHTML = text;
+                                for(var i = 0; i < errList.length; i++){
+                                    document.getElementById("A" + errList[i]).style = "background-color:#a73853;";
+                                    document.getElementById("B" + errList[i]).style = "background-color:#a73853;";
+                                }
                                 break;
                         }
                     } else{
                         t.innerHTML="Результат: вроде все верно";
+                        for(var i = 0; i < this.state.index; i++){
+                            document.getElementById("A" + i).style = "background-color:#white;";
+                            document.getElementById("B" + i).style = "background-color:#white;";
+                        }
                     }
                 },
 
