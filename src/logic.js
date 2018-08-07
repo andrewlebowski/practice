@@ -212,6 +212,12 @@ function errorList(lpArr, rpArr){
     return errList;
   } else {
     for(var i = 0; i < lpArr.length; i++){
+      if(lpArr[i].toString() == "" || rpArr[i].toString() == ""){
+        errList.push(-4);
+        return errList;
+      }
+    }
+    for(var i = 0; i < lpArr.length; i++){
       if(check(lpArr[i], rpArr[i]) == false){
         errList.push(i);
       }
