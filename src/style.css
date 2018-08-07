@@ -35,7 +35,8 @@
     line-height: 30px;
     padding-top: 0;
     padding-bottom: 0;
-    margin: 5px;
+    margin: 5px;    
+    width: 130px;
 }
 
 .removeBtn {
@@ -48,6 +49,7 @@
     padding-top: 0;
     padding-bottom: 0;
     margin: 5px;
+    width: 130px;
 }
 
 .checkBtn{
@@ -61,6 +63,19 @@
     padding-top: 0;
     padding-bottom: 0;
     margin: 5px;
+}
+
+.clearBtn{
+    background-color: #a73853;
+    color: white;
+    border: transparent;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 5px;
+    width: 120px;
 }
 
 .expressionContainer input{
