@@ -132,6 +132,9 @@
                             case -3:
                                 t.innerHTML="Результат: преоразование выполнено не до конца";
                                 break;
+                            case -4:
+                                t.innerHTML="Результат: уберите пустые строки";
+                                break;
                             default:
                                 if(errList.length > 1){
                                     var text = "Результат: ошибки в строках ";
@@ -158,6 +161,12 @@
                     }
                 },
 
+                clearAll: function(){
+                    this.setState({commentsA: [], commentsB: [], index:1, first:true});
+                    document.getElementById("A0").value = "";
+                    document.getElementById("B0").value = "";
+                },
+
                 render: function(){
                     if(this.state.first) 
                     {
@@ -178,6 +187,7 @@
                             <div>
                                 <input className="btn addBtn" type="button" value="Добавить строку" onClick={this.add}/>
                                 <input className="btn removeBtn" type="button" value="Удалить строку" onClick={this.remove}/>
+                                <input className="btn clearBtn" type="button" value="Очистить все" onClick={this.clearAll}/>
                             </div>
                             <input className="btn checkBtn" type="button" value = "Проверить" onClick={this.test}/>
                             <div className="resultBox">
