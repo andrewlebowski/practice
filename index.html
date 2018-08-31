@@ -95,6 +95,11 @@
                         arrA.splice(ind, 1);
                         arrB.splice(ind, 1);
                         this.setState({commentsA: arrA, commentsB: arrB, index: ind});
+                    } else {
+                        document.getElementById("A0").value = "";
+                        document.getElementById("B0").value = "";
+                        document.getElementById("A0").style = "background-color:#white;";
+                        document.getElementById("B0").style = "background-color:#white;";
                     }
                 },
 
@@ -131,9 +136,19 @@
                                 break;
                             case -3:
                                 t.innerHTML="Результат: преоразование выполнено не до конца";
+                                for(var i = 0; i < this.state.index; i++){
+                                    document.getElementById("A" + i).style = "background-color:#a73853;";
+                                    document.getElementById("B" + i).style = "background-color:#a73853;";
+                                }
                                 break;
                             case -4:
                                 t.innerHTML="Результат: уберите пустые строки";
+                                for(var i = 0; i < this.state.index; i++){
+                                    if(document.getElementById("A" + i).value == "" || document.getElementById("B" + i).value == ""){
+                                        document.getElementById("A" + i).style = "background-color:#a73853;";
+                                        document.getElementById("B" + i).style = "background-color:#a73853;";
+                                    }
+                                }
                                 break;
                             default:
                                 if(errList.length > 1){
@@ -165,6 +180,8 @@
                     this.setState({commentsA: [], commentsB: [], index:1, first:true});
                     document.getElementById("A0").value = "";
                     document.getElementById("B0").value = "";
+                    document.getElementById("A0").style = "background-color:#white;";
+                    document.getElementById("B0").style = "background-color:#white;";
                 },
 
                 render: function(){
