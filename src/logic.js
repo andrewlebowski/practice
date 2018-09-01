@@ -217,8 +217,8 @@ function errorList(lpArr, rpArr){
         return errList;
       }
     }
-    for(var i = 0; i < lpArr.length; i++){
-      if(check(lpArr[i], rpArr[i]) == false){
+    for(var i = 1; i < lpArr.length; i++){
+      if(check(lpArr[i], rpArr[i]) == false || elemsInExpression(lpArr[i]).toString() != elemsInExpression(lpArr[i - 1]).toString()){
         errList.push(i);
       }
     }
